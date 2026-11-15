@@ -1,106 +1,70 @@
 # DESIGN SYSTEM & UI GUIDELINES
-## Aplikasi To-Do List
+## TaskFlow — Pengelola Tugas (Dark Palette — Sesuai Desain Figma)
 
-Dokumen ini merupakan panduan standar visual, tata letak, dan interaksi yang wajib dipatuhi oleh pengembang maupun asisten AI dalam mengimplementasikan antarmuka web.
-
----
-
-### 1. Palet Warna (Tailwind CSS Tokens)
-
-Aplikasi dibangun menggunakan skema warna netral modern dengan penekanan fungsional (*semantic color coding*) untuk membedakan status dan aksi:
-
-| Kategori | Token Tailwind | Kode Hex | Penggunaan UI |
-| :--- | :--- | :--- | :--- |
-| **Canvas Background** | `bg-slate-50` | `#F8FAFC` | Latar belakang seluruh halaman aplikasi. |
-| **Card / Surface** | `bg-white` | `#FFFFFF` | Latar belakang kontainer kartu, panel form, dan tabel data. |
-| **Border / Divider** | `border-slate-200` | `#E2E8F0` | Garis batas antar komponen, border kartu, dan pemisah baris tabel. |
-| **Text Primary** | `text-slate-900` | `#0F172A` | Judul utama, heading, dan teks prioritas tertinggi. |
-| **Text Secondary** | `text-slate-500` | `#64748B` | Label form, placeholder, subjudul, dan metadata (tanggal). |
-| **Primary Brand** | `bg-indigo-600`, `hover:bg-indigo-700` | `#4F46E5` | Tombol simpan data, focus ring formulir, dan indikator aktif. |
-| **Success / Completed** | `bg-emerald-600`, `text-emerald-700`, `bg-emerald-50` | `#059669` | Badge status `Completed`, kartu KPI tugas selesai, checkbox checked. |
-| **Pending / Warning** | `bg-amber-500`, `text-amber-700`, `bg-amber-50` | `#F59E0B` | Badge status `Pending`, kartu KPI tugas tertunda. |
-| **Danger / Error** | `bg-rose-600`, `text-rose-700`, `bg-rose-50` | `#E11D48` | Tombol hapus data, banner alert kegagalan validasi (`TC-02`). |
+Dokumen ini mendokumentasikan sistem desain, token visual, palet warna, tipografi, dan panduan komponen yang diekstrak langsung dari desain resmi Figma **TaskFlow** (`UbROgniYvDs6tJnkwEC93E`).
 
 ---
 
-### 2. Tipografi & Tata Cara Penulisan
+### 1. Palet Warna (TaskFlow Dark Theme Tokens)
+
+Desain menggunakan tema gelap modern (*Deep Slate & Navy*) dengan aksen *Warm Amber / Gold* dan *Emerald Green* yang kontras dan nyaman di mata:
+
+| Token Desain | Kode Hex / Nilai | Penerapan pada Antarmuka |
+| :--- | :--- | :--- |
+| **Canvas Background** | `#0D1320` (`bg-[#0d1320]`) | Latar belakang seluruh halaman web utama. |
+| **Sidebar Surface** | `#161B29` (`bg-[#161b29]`) | Latar belakang panel navigasi samping (aside). |
+| **Card / Bento Surface** | `#1A1F2D` (`bg-[#1a1f2d]`) | Kontainer 4 kartu metrik (KPI), kartu tugas, dan tombol filter. |
+| **Input / Outer Bar** | `#242A38` (`bg-[#242a38]`) | Bar pembungkus *quick add task*, border subtil, dan badge tag default. |
+| **Input Inner Surface** | `rgba(8,14,27,0.8)` | Kolom isian teks judul tugas pada form cepat. |
+| **Primary Brand / Amber** | `#F59E0B` (`bg-[#f59e0b]`) | Tombol aksi utama (+TAMBAH), checkbox aktif, dan tombol header. |
+| **Amber Text / Highlight** | `#FFC174` (`text-[#ffc174]`) | Teks heading logo, counter pending, dan aksen progress bar. |
+| **Amber Button Text** | `#472A00` (`text-[#472a00]`) | Teks kontras tinggi di atas tombol amber `#F59E0B`. |
+| **Text Primary** | `#DDE2F5` (`text-[#dde2f5]`) | Judul halaman "Daftar Tugas Saya", angka KPI total, dan teks judul aktif. |
+| **Text Secondary / Muted** | `#D8C3AD` (`text-[#d8c3ad]`) | Label uppercase KPI, teks subjudul, tanggal, dan placeholder form. |
+| **Success / Completed** | `#4EDEA3` | Angka KPI tuntas, badge "Selesai" (`bg-[rgba(0,165,114,0.2)]`), progress bar hijau. |
+| **Warning / Pending** | `#FFB95F` | Badge "Menunggu / Tertunda" (`bg-[rgba(245,158,11,0.2)]`). |
+| **Urgent Alert** | `#FFB4AB` (`text-[#ffb4ab]`) | Metrik tenggat hari ini dan teks perhatian. |
+| **Danger / Delete Action** | `#FFB4AB` / `#690005` | Tombol Hapus (`bg-[#ffb4ab] text-[#690005] hover:bg-[#ff897d]`). |
+
+---
+
+### 2. Tipografi & Tata Letak
 
 1. **Font Family:**
-   * Font utama: `Inter`, `Plus Jakarta Sans`, atau fallback sans-serif sistem (`font-sans`).
+   * Teks & Heading: `Plus Jakarta Sans` dan `Inter` (sans-serif).
    * Konfigurasi CDN Google Fonts:
      ```html
      <link rel="preconnect" href="https://fonts.googleapis.com">
      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
      ```
-2. **Hierarki Teks:**
-   * **App Heading:** `text-2xl font-bold tracking-tight text-slate-900`
-   * **Section / Card Heading:** `text-base font-semibold text-slate-800`
-   * **KPI Numbers:** `text-3xl font-extrabold text-slate-900`
-   * **Table Body / Form Text:** `text-sm font-normal text-slate-700`
-   * **Micro-copy & Timestamps:** `text-xs font-medium text-slate-400`
-3. **Standar Lokalisasi Indonesia (`id-ID`):**
-   * Format penulisan tanggal wajib menggunakan standar Indonesia: `18 November 2026` atau format ringkas `18 Nov 2026`.
-   * Implementasi JavaScript:
-     ```javascript
-     function formatIndonesianDate(dateString) {
-       if (!dateString) return "-";
-       const date = new Date(dateString);
-       return new Intl.DateTimeFormat('id-ID', {
-         day: 'numeric',
-         month: 'short',
-         year: 'numeric'
-       }).format(date);
-     }
-     ```
+2. **Hierarki Visual:**
+   * **Page Title:** `text-[32px] font-bold text-[#dde2f5] tracking-tight`
+   * **Bento Metric Counter:** `text-[32px] font-bold` (Total: `#dde2f5`, Pending: `#ffc174`, Selesai: `#4edea3`)
+   * **Card Title:** `text-[16px] font-semibold text-[#dde2f5]` (Completed: `line-through text-[#d8c3ad]/60`)
+   * **Card Description:** `text-[12px] text-[#d8c3ad]/70`
+   * **Badge & Micro-copy:** `text-[11px] font-semibold tracking-wider uppercase`
 
 ---
 
-### 3. Aturan Komponen Interaktif
+### 3. Komponen Khusus Sesuai Figma
 
-#### A. Status Tombol & Loading State
-* Tombol aksi tidak boleh dibiarkan tanpa respon saat proses asynchronous berlangsung (misal: saat menyimpan ke Supabase).
-* Tombol wajib dinonaktifkan (`disabled`) dan menampilkan indikator loading (*spinner*) agar pengguna tidak melakukan *double submit*:
-  ```html
-  <button id="btn-submit" type="submit" class="inline-flex items-center justify-center px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm rounded-lg transition-colors shadow-sm disabled:opacity-60 disabled:cursor-not-allowed">
-    <svg id="submit-spinner" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white hidden" fill="none" viewBox="0 0 24 24">
-      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-    </svg>
-    <span id="submit-label">Simpan Tugas</span>
-  </button>
-  ```
+#### A. 4 Bento Metric Widgets
+1. **Total Beban Tugas:** Counter besar putih kebiruan, teks `Semua kategori`, garis bar kuning.
+2. **Perlu Tindakan (Pending):** Counter kuning emas, teks `Prioritas aktif`, garis bar oranye.
+3. **Tuntas Diselesaikan:** Counter hijau emerald, teks persentase tercapai, garis bar hijau.
+4. **Tenggat Hari Ini:** Counter warna salmon merah muda (`#ffb4ab`), nama tugas darurat terdekat, disertai ikon radial gauge.
 
-#### B. Alert Banner Kegagalan Validasi (`TC-02`)
-* Jika pengguna mengosongkan judul tugas, tampilkan kotak peringatan merah di atas formulir dengan animasi transisi yang jelas:
-  ```html
-  <div id="alert-error" class="hidden mb-4 p-3.5 bg-rose-50 border border-rose-200 rounded-lg flex items-start gap-3 text-rose-800 text-sm animate-fade-in" role="alert">
-    <svg class="w-5 h-5 text-rose-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-    <div>
-      <p class="font-semibold text-rose-900">Validasi Gagal</p>
-      <p id="alert-error-message" class="text-rose-700">Judul tugas tidak boleh kosong!</p>
-    </div>
-  </div>
-  ```
+#### B. Quick In-Place Add Task Bar
+Bar horizontal ramping dengan efek glassmorphism gelap:
+* Ikon list / task di sebelah kiri.
+* Input judul berlatar gelap transparan (`rgba(8,14,27,0.8)`).
+* Pemilih tanggal deadline ringkas.
+* Tombol aksi `+ TAMBAH` berwarna Amber tegas dengan teks gelap.
 
-#### C. Empty State (Tabel Kosong)
-* Ketika data tugas masih kosong atau pencarian tidak menghasilkan rekaman, jangan tampilkan tabel kosong yang membingungkan. Tampilkan visual *empty state*:
-  ```html
-  <div id="empty-state" class="text-center py-12 px-4">
-    <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 mx-auto flex items-center justify-center mb-3">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-      </svg>
-    </div>
-    <h3 class="text-sm font-semibold text-slate-800">Tidak ada tugas ditemukan</h3>
-    <p class="text-xs text-slate-500 mt-1">Mulai dengan menambahkan tugas baru melalui formulir.</p>
-  </div>
-  ```
+#### C. Custom Checkbox Aksi Cepat (`TC-01`)
+* **State Pending:** Kotak persegi `border border-[#d8c3ad]/40 bg-[#1a1f2d] hover:border-[#f59e0b]`.
+* **State Completed:** Kotak persegi terisi penuh warna Amber `#f59e0b` dengan ikon centang putih/gelap dan efek transisi lembut.
 
-#### D. Quick Toggle Transition (`TC-01`)
-* Ketika status tugas diubah menjadi `'Completed'` melalui klik checkbox:
-  * Teks judul tugas seketika diberi style: `line-through text-slate-400`.
-  * Badge berubah warna dari amber ke emerald.
-  * Kartu metrik di atas otomatis melakukan re-kalkulasi secara instan.
+#### D. Alert Banner Validasi (`TC-02`)
+* Kotak peringatan bergaya dark-theme `bg-rose-950/80 border border-rose-500/50 text-rose-200` dengan pesan mutlak: *"Judul tugas tidak boleh kosong!"*.
