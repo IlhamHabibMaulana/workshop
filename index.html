@@ -420,13 +420,19 @@
   <!-- ===================================================================
        3. MODAL EDIT / DETAIL TUGAS
        =================================================================== -->
-  <div id="task-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-xs p-4">
+  <div id="task-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4">
     <div class="bg-[#1A1F2D] border border-[#242A38] rounded-xl max-w-lg w-full p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between pb-3 border-b border-[#242A38]">
         <h3 id="modal-heading" class="text-base font-bold text-[#DDE2F5] font-display">Edit Tugas</h3>
         <button type="button" onclick="closeTaskModal()" class="text-[#D8C3AD] hover:text-[#DDE2F5]">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
+      </div>
+
+      <!-- Modal Error Alert (TC-02) -->
+      <div id="modal-alert-error" class="hidden p-3 bg-rose-950/80 border border-rose-500/50 rounded-lg flex items-center gap-2 text-rose-200 text-xs">
+        <svg class="w-4 h-4 text-rose-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span id="modal-alert-error-message" class="font-semibold text-rose-100">Judul tugas tidak boleh kosong!</span>
       </div>
 
       <form id="modal-form" onsubmit="handleModalSubmit(event)" class="space-y-4">
@@ -623,16 +629,29 @@
     // ===================================================================
     // ERROR ALERT (TC-02)
     // ===================================================================
-    function showErrorAlert(msg) {
-      const box = document.getElementById('alert-error');
-      const text = document.getElementById('alert-error-message');
-      text.textContent = msg;
-      box.classList.remove('hidden');
+    function showErrorAlert(msg, isModal = false) {
+      if (isModal) {
+        const modalBox = document.getElementById('modal-alert-error');
+        const modalText = document.getElementById('modal-alert-error-message');
+        if (modalBox && modalText) {
+          modalText.textContent = msg;
+          modalBox.classList.remove('hidden');
+        }
+      } else {
+        const box = document.getElementById('alert-error');
+        const text = document.getElementById('alert-error-message');
+        if (box && text) {
+          text.textContent = msg;
+          box.classList.remove('hidden');
+        }
+      }
     }
 
     function hideErrorAlert() {
       const box = document.getElementById('alert-error');
-      box.classList.add('hidden');
+      if (box) box.classList.add('hidden');
+      const modalBox = document.getElementById('modal-alert-error');
+      if (modalBox) modalBox.classList.add('hidden');
     }
 
     // ===================================================================
@@ -692,6 +711,7 @@
         const matchQ = (t.judul || '').toLowerCase().includes(query) || (t.deskripsi || '').toLowerCase().includes(query);
         const matchStatus = (currentStatusFilter === 'Semua') || 
                             (currentStatusFilter === 'Hari Ini' && t.deadline === todayStr) ||
+                            (currentStatusFilter === 'Mendatang' && t.deadline > todayStr) ||
                             (t.status === currentStatusFilter);
         const matchCat = (catVal === 'Semua') || (t.kategori === catVal);
         return matchQ && matchStatus && matchCat;
@@ -925,7 +945,8 @@
 
       // TC-02
       if (!judul || judul === "") {
-        showErrorAlert("Judul tugas tidak boleh kosong!");
+        showErrorAlert("Judul tugas tidak boleh kosong!", true);
+        document.getElementById('modal-judul').focus();
         return;
       }
 
@@ -995,6 +1016,24 @@
     }
 
     function setFilterSidebar(filter) {
+      const navIds = [
+        { id: 'nav-semua', key: 'Semua' },
+        { id: 'nav-hari-ini', key: 'Hari Ini' },
+        { id: 'nav-mendatang', key: 'Mendatang' },
+        { id: 'nav-selesai', key: 'Completed' }
+      ];
+
+      navIds.forEach(item => {
+        const el = document.getElementById(item.id);
+        if (el) {
+          if (item.key === filter) {
+            el.className = "w-full flex items-center justify-between px-3 py-2 rounded-md bg-[#F59E0B] text-[#472A00] font-semibold transition";
+          } else {
+            el.className = "w-full flex items-center justify-between px-3 py-2 rounded-md text-[#D8C3AD] hover:bg-[#242A38] hover:text-[#DDE2F5] transition";
+          }
+        }
+      });
+
       setStatusFilter(filter);
     }
 
