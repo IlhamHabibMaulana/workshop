@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager - Aplikasi To-Do List</title>
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Supabase JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+
+  <!-- TOP NAVIGATION / HEADER -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-sm shadow-indigo-200">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-slate-900 leading-tight">Task Manager</h1>
+          <p class="text-xs text-slate-500">Aplikasi To-Do List Harian</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div id="conn-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span id="conn-text">Demo Local State</span>
+        </div>
+        <div id="date-display" class="hidden sm:block text-xs font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
+          <!-- Live Date id-ID -->
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+
+    <!-- SUMMARY / KPI CARDS -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <!-- Card 1: Total Tasks -->
+      <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs flex items-center justify-between">
+        <div class="space-y-1">
+          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Tugas</p>
+          <p id="kpi-total" class="text-3xl font-extrabold text-slate-900">0</p>
+          <span class="inline-block text-[11px] font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded">Semua data</span>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Card 2: Completed Tasks -->
+      <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs flex items-center justify-between">
+        <div class="space-y-1">
+          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tugas Selesai</p>
+          <p id="kpi-completed" class="text-3xl font-extrabold text-emerald-600">0</p>
+          <span class="inline-block text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">Completed</span>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Card 3: Pending Tasks -->
+      <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-xs flex items-center justify-between">
+        <div class="space-y-1">
+          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tugas Tertunda</p>
+          <p id="kpi-pending" class="text-3xl font-extrabold text-amber-500">0</p>
+          <span class="inline-block text-[11px] font-medium text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">Pending</span>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN TWO-COLUMN SPLIT LAYOUT -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      
+      <!-- LEFT COLUMN: FORM INPUT & VALIDASI -->
+      <div class="lg:col-span-5 bg-white rounded-xl border border-slate-200 shadow-xs p-6">
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+          <div>
+            <h2 id="form-heading" class="text-base font-semibold text-slate-900">Tambah Tugas Baru</h2>
+            <p class="text-xs text-slate-500">Lengkapi formulir di bawah ini</p>
+          </div>
+          <span id="form-mode-badge" class="text-[11px] font-semibold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-md">
+            Mode Tambah
+          </span>
+        </div>
+
+        <!-- ALERT ERROR BOX (TC-02) -->
+        <div id="alert-error" class="hidden mb-4 p-3 bg-rose-50 border border-rose-200 rounded-lg flex items-start gap-2.5 text-rose-800 text-sm" role="alert">
+          <svg class="w-5 h-5 text-rose-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <div class="flex-1">
+            <p class="font-semibold text-rose-900 text-xs">Peringatan Validasi</p>
+            <p id="alert-error-message" class="text-xs mt-0.5 font-medium text-rose-700">Judul tugas tidak boleh kosong!</p>
+          </div>
+          <button type="button" onclick="hideErrorAlert()" class="text-rose-400 hover:text-rose-600">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <form id="task-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+          <input type="hidden" id="task-id" value="">
+
+          <!-- Judul Input -->
+          <div>
+            <label for="task-judul" class="block text-xs font-semibold text-slate-700 mb-1">
+              Judul Tugas <span class="text-rose-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="task-judul" 
+              maxlength="150"
+              placeholder="Contoh: Menyelesaikan Laporan Modul 3" 
+              class="w-full px-3.5 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition text-slate-800 placeholder-slate-400"
+            >
+          </div>
+
+          <!-- Deskripsi Textarea -->
+          <div>
+            <label for="task-deskripsi" class="block text-xs font-semibold text-slate-700 mb-1">
+              Deskripsi Tugas
+            </label>
+            <textarea 
+              id="task-deskripsi" 
+              rows="3" 
+              placeholder="Tuliskan catatan atau instruksi rincian tugas..."
+              class="w-full px-3.5 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition text-slate-800 placeholder-slate-400 resize-y"
+            ></textarea>
+          </div>
+
+          <!-- Deadline Input -->
+          <div>
+            <label for="task-deadline" class="block text-xs font-semibold text-slate-700 mb-1">
+              Tenggat Waktu (Deadline)
+            </label>
+            <input 
+              type="date" 
+              id="task-deadline" 
+              class="w-full px-3.5 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition text-slate-800"
+            >
+          </div>
+
+          <!-- Status Dropdown -->
+          <div>
+            <label for="task-status" class="block text-xs font-semibold text-slate-700 mb-1">
+              Status Pengerjaan
+            </label>
+            <select 
+              id="task-status" 
+              class="w-full px-3.5 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition text-slate-800"
+            >
+              <option value="Pending">Pending</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex items-center gap-2 pt-2">
+            <button 
+              type="submit" 
+              id="btn-submit" 
+              class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium text-sm rounded-lg transition shadow-xs focus:ring-2 focus:ring-indigo-500/30 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              <svg id="submit-spinner" class="animate-spin -ml-1 mr-1 h-4 w-4 text-white hidden" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+              </svg>
+              <span id="btn-submit-label">Simpan Tugas</span>
+            </button>
+            <button 
+              type="button" 
+              id="btn-cancel" 
+              onclick="resetForm()" 
+              class="px-4 py-2.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 font-medium text-sm rounded-lg transition shadow-xs"
+            >
+              Reset
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- RIGHT COLUMN: SEARCH, FILTER & TABLE -->
+      <div class="lg:col-span-7 space-y-4">
+        
+        <!-- Controls Bar -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xs p-4 flex flex-col sm:flex-row gap-3 items-center justify-between">
+          <div class="relative w-full sm:flex-1">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <input 
+              type="text" 
+              id="search-input" 
+              oninput="renderTasks()" 
+              placeholder="Cari tugas berdasarkan judul atau deskripsi..." 
+              class="w-full pl-9 pr-3.5 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition text-slate-800 placeholder-slate-400"
+            >
+          </div>
+          <div class="w-full sm:w-44">
+            <select 
+              id="filter-status" 
+              onchange="renderTasks()" 
+              class="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition text-slate-800"
+            >
+              <option value="Semua">Semua Status</option>
+              <option value="Pending">Pending</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Data Table Container -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                  <th class="py-3 px-4 w-12 text-center">Status</th>
+                  <th class="py-3 px-4">Tugas & Keterangan</th>
+                  <th class="py-3 px-4 w-32">Deadline</th>
+                  <th class="py-3 px-4 w-28 text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="task-table-body" class="divide-y divide-slate-100 text-sm">
+                <!-- Dynamically rendered rows -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty State -->
+          <div id="empty-state" class="hidden text-center py-12 px-4">
+            <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 mx-auto flex items-center justify-center mb-3">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+            </div>
+            <h3 class="text-sm font-semibold text-slate-800">Tidak ada tugas ditemukan</h3>
+            <p class="text-xs text-slate-500 mt-1">Mulai dengan menambahkan tugas baru atau sesuaikan filter pencarian.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 py-4 mt-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500">
+      Aplikasi To-Do List &copy; 2026 &bull; Sesuai Spesifikasi SKPL Modul 1-5 &bull; Dibangun dengan Tailwind CSS & Supabase
+    </div>
+  </footer>
+
+  <!-- APPLICATION LOGIC & SEC-01 / SEC-02 / TC-01 / TC-02 COMPLIANCE -->
+  <script>
+    // ===================================================================
+    // 1. SUPABASE CLIENT CONFIGURATION (SEC-02 COMPLIANT)
+    // ===================================================================
+    // Masukkan Supabase URL dan Anon Key publik Anda di bawah ini jika ingin terhubung langsung ke Cloud Supabase:
+    const SUPABASE_URL = "";
+    const SUPABASE_ANON_KEY = "";
+
+    let supabaseClient = null;
+    let isCloud = false;
+
+    if (SUPABASE_URL && SUPABASE_ANON_KEY && typeof supabase !== 'undefined') {
+      try {
+        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        isCloud = true;
+        document.getElementById('conn-text').textContent = "Supabase Connected";
+        document.getElementById('conn-badge').className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200";
+      } catch (e) {
+        console.warn("Koneksi Supabase gagal, beralih ke local storage:", e);
+      }
+    }
+
+    // Default Seed Data (Realistis Sesuai SKPL)
+    const initialTasks = [
+      {
+        id: 1,
+        judul: 'Menyelesaikan Laporan Modul 3',
+        deskripsi: 'Menyusun bab metodologi, melampirkan screenshot pengujian blackbox, dan export ke format PDF.',
+        deadline: new Date(Date.now() + 2 * 86400000).toISOString().split('T')[0],
+        status: 'Pending'
+      },
+      {
+        id: 2,
+        judul: 'Review Pull Request Fitur Autentikasi',
+        deskripsi: 'Memeriksa kesesuaian penanganan token JWT dan audit sanitasi input form login.',
+        deadline: new Date(Date.now() + 1 * 86400000).toISOString().split('T')[0],
+        status: 'Completed'
+      },
+      {
+        id: 3,
+        judul: 'Mempersiapkan Slide Presentasi Proyek',
+        deskripsi: 'Membuat 10 slide ringkas arsitektur sistem untuk sesi demo workshop hari Jumat.',
+        deadline: new Date(Date.now() + 4 * 86400000).toISOString().split('T')[0],
+        status: 'Pending'
+      }
+    ];
+
+    let tasksState = JSON.parse(localStorage.getItem('tasks_data')) || initialTasks;
+
+    function saveLocal() {
+      localStorage.setItem('tasks_data', JSON.stringify(tasksState));
+    }
+
+    // ===================================================================
+    // 2. HELPER SANITASI XSS (SEC-01 COMPLIANT)
+    // ===================================================================
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function formatIndonesianDate(dateString) {
+      if (!dateString) return "-";
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return "-";
+      return new Intl.DateTimeFormat('id-ID', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      }).format(date);
+    }
+
+    function updateLiveDate() {
+      const now = new Date();
+      const formatted = new Intl.DateTimeFormat('id-ID', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      }).format(now);
+      const el = document.getElementById('date-display');
+      if (el) el.textContent = formatted;
+    }
+
+    // ===================================================================
+    // 3. ALERT HANDLING (TC-02)
+    // ===================================================================
+    function showErrorAlert(msg) {
+      const alertBox = document.getElementById('alert-error');
+      const alertMsg = document.getElementById('alert-error-message');
+      alertMsg.textContent = msg;
+      alertBox.classList.remove('hidden');
+    }
+
+    function hideErrorAlert() {
+      const alertBox = document.getElementById('alert-error');
+      alertBox.classList.add('hidden');
+    }
+
+    // ===================================================================
+    // 4. DATA FETCH & CRUD OPERATIONS
+    // ===================================================================
+    async function loadTasks() {
+      if (isCloud && supabaseClient) {
+        try {
+          const { data, error } = await supabaseClient
+            .from('tasks')
+            .select('*')
+            .order('id', { ascending: false });
+          if (!error && data) {
+            tasksState = data;
+          }
+        } catch (err) {
+          console.error("Gagal membaca dari Supabase:", err);
+        }
+      }
+      renderTasks();
+    }
+
+    function renderTasks() {
+      const tbody = document.getElementById('task-table-body');
+      const emptyState = document.getElementById('empty-state');
+      const searchQuery = (document.getElementById('search-input').value || '').toLowerCase().trim();
+      const filterStatus = document.getElementById('filter-status').value;
+
+      // Filter tasks
+      const filtered = tasksState.filter(task => {
+        const matchQuery = (task.judul || '').toLowerCase().includes(searchQuery) ||
+                           (task.deskripsi || '').toLowerCase().includes(searchQuery);
+        const matchStatus = (filterStatus === 'Semua') || (task.status === filterStatus);
+        return matchQuery && matchStatus;
+      });
+
+      // Update KPIs
+      const totalCount = tasksState.length;
+      const completedCount = tasksState.filter(t => t.status === 'Completed').length;
+      const pendingCount = tasksState.filter(t => t.status === 'Pending').length;
+
+      document.getElementById('kpi-total').textContent = totalCount;
+      document.getElementById('kpi-completed').textContent = completedCount;
+      document.getElementById('kpi-pending').textContent = pendingCount;
+
+      // Render table rows safely (Anti-XSS SEC-01)
+      tbody.innerHTML = '';
+
+      if (filtered.length === 0) {
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+
+        filtered.forEach(task => {
+          const isCompleted = task.status === 'Completed';
+
+          const tr = document.createElement('tr');
+          tr.className = "hover:bg-slate-50/80 transition-colors border-b border-slate-100";
+
+          // Col 1: Quick Checkbox Toggle (TC-01)
+          const tdCheckbox = document.createElement('td');
+          tdCheckbox.className = "py-3 px-4 text-center";
+          const checkbox = document.createElement('input');
+          checkbox.type = "checkbox";
+          checkbox.checked = isCompleted;
+          checkbox.className = "w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer";
+          checkbox.title = "Toggle status selesai / pending";
+          checkbox.addEventListener('change', () => toggleTaskStatus(task.id, checkbox.checked));
+          tdCheckbox.appendChild(checkbox);
+          tr.appendChild(tdCheckbox);
+
+          // Col 2: Judul & Deskripsi (SEC-01 Safe textContent)
+          const tdContent = document.createElement('td');
+          tdContent.className = "py-3 px-4";
+          
+          const titleDiv = document.createElement('div');
+          titleDiv.className = `font-medium ${isCompleted ? 'line-through text-slate-400' : 'text-slate-900'}`;
+          titleDiv.textContent = task.judul; // SEC-01: textContent eliminates XSS
+          tdContent.appendChild(titleDiv);
+
+          if (task.deskripsi && task.deskripsi.trim() !== '') {
+            const descDiv = document.createElement('p');
+            descDiv.className = "text-xs text-slate-500 mt-0.5 line-clamp-2";
+            descDiv.textContent = task.deskripsi; // SEC-01: textContent eliminates XSS
+            tdContent.appendChild(descDiv);
+          }
+          tr.appendChild(tdContent);
+
+          // Col 3: Deadline & Badge Status
+          const tdDeadline = document.createElement('td');
+          tdDeadline.className = "py-3 px-4 whitespace-nowrap";
+          
+          const dateSpan = document.createElement('div');
+          dateSpan.className = "text-xs text-slate-600 font-medium";
+          dateSpan.textContent = formatIndonesianDate(task.deadline);
+          tdDeadline.appendChild(dateSpan);
+
+          const badgeSpan = document.createElement('span');
+          if (isCompleted) {
+            badgeSpan.className = "inline-block mt-1 text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded";
+            badgeSpan.textContent = "Completed";
+          } else {
+            badgeSpan.className = "inline-block mt-1 text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded";
+            badgeSpan.textContent = "Pending";
+          }
+          tdDeadline.appendChild(badgeSpan);
+          tr.appendChild(tdDeadline);
+
+          // Col 4: Action Buttons (Edit & Delete)
+          const tdAction = document.createElement('td');
+          tdAction.className = "py-3 px-4 text-center whitespace-nowrap";
+          const actionWrap = document.createElement('div');
+          actionWrap.className = "flex items-center justify-center gap-1.5";
+
+          // Edit Button
+          const btnEdit = document.createElement('button');
+          btnEdit.type = "button";
+          btnEdit.className = "p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-md transition";
+          btnEdit.title = "Edit Tugas";
+          btnEdit.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>`;
+          btnEdit.addEventListener('click', () => startEditTask(task.id));
+          actionWrap.appendChild(btnEdit);
+
+          // Delete Button
+          const btnDelete = document.createElement('button');
+          btnDelete.type = "button";
+          btnDelete.className = "p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-md transition";
+          btnDelete.title = "Hapus Tugas";
+          btnDelete.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>`;
+          btnDelete.addEventListener('click', () => deleteTask(task.id));
+          actionWrap.appendChild(btnDelete);
+
+          tdAction.appendChild(actionWrap);
+          tr.appendChild(tdAction);
+
+          tbody.appendChild(tr);
+        });
+      }
+    }
+
+    // ===================================================================
+    // 5. QUICK TOGGLE STATUS (TC-01 COMPLIANT)
+    // ===================================================================
+    async function toggleTaskStatus(id, isChecked) {
+      const nextStatus = isChecked ? 'Completed' : 'Pending';
+
+      // Update in local state
+      const target = tasksState.find(t => String(t.id) === String(id));
+      if (target) {
+        target.status = nextStatus;
+        saveLocal();
+        renderTasks(); // Instan zero-reload
+      }
+
+      // Sync with Supabase if connected
+      if (isCloud && supabaseClient) {
+        try {
+          await supabaseClient
+            .from('tasks')
+            .update({ status: nextStatus })
+            .eq('id', id);
+        } catch (err) {
+          console.error("Gagal sinkronisasi toggle status ke Supabase:", err);
+        }
+      }
+    }
+
+    // ===================================================================
+    // 6. SUBMIT FORM & VALIDASI (TC-02 COMPLIANT)
+    // ===================================================================
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+      hideErrorAlert();
+
+      const idVal = document.getElementById('task-id').value;
+      const judulVal = document.getElementById('task-judul').value.trim();
+      const deskripsiVal = document.getElementById('task-deskripsi').value.trim();
+      const deadlineVal = document.getElementById('task-deadline').value || null;
+      const statusVal = document.getElementById('task-status').value;
+
+      // RULE 3 & TC-02: Validasi Logika Wajib
+      if (!judulVal || judulVal === "") {
+        showErrorAlert("Judul tugas tidak boleh kosong!");
+        document.getElementById('task-judul').focus();
+        return; // Menolak simpan
+      }
+
+      const btnSubmit = document.getElementById('btn-submit');
+      const spinner = document.getElementById('submit-spinner');
+      btnSubmit.disabled = true;
+      spinner.classList.remove('hidden');
+
+      try {
+        if (idVal) {
+          // UPDATE MODE
+          if (isCloud && supabaseClient) {
+            const { error } = await supabaseClient
+              .from('tasks')
+              .update({
+                judul: judulVal,
+                deskripsi: deskripsiVal,
+                deadline: deadlineVal,
+                status: statusVal
+              })
+              .eq('id', idVal);
+            if (error) throw error;
+          }
+
+          const idx = tasksState.findIndex(t => String(t.id) === String(idVal));
+          if (idx !== -1) {
+            tasksState[idx] = {
+              ...tasksState[idx],
+              judul: judulVal,
+              deskripsi: deskripsiVal,
+              deadline: deadlineVal,
+              status: statusVal
+            };
+            saveLocal();
+          }
+        } else {
+          // INSERT MODE
+          const newTask = {
+            id: Date.now(),
+            judul: judulVal,
+            deskripsi: deskripsiVal,
+            deadline: deadlineVal,
+            status: statusVal
+          };
+
+          if (isCloud && supabaseClient) {
+            const { data, error } = await supabaseClient
+              .from('tasks')
+              .insert([{
+                judul: judulVal,
+                deskripsi: deskripsiVal,
+                deadline: deadlineVal,
+                status: statusVal
+              }])
+              .select();
+            if (error) throw error;
+            if (data && data.length > 0) {
+              newTask.id = data[0].id;
+            }
+          }
+
+          tasksState.unshift(newTask);
+          saveLocal();
+        }
+
+        resetForm();
+        renderTasks();
+      } catch (err) {
+        showErrorAlert("Terjadi kesalahan: " + (err.message || err));
+      } finally {
+        btnSubmit.disabled = false;
+        spinner.classList.add('hidden');
+      }
+    }
+
+    // ===================================================================
+    // 7. FORM RESET & EDIT HANDLING
+    // ===================================================================
+    function startEditTask(id) {
+      const task = tasksState.find(t => String(t.id) === String(id));
+      if (!task) return;
+
+      hideErrorAlert();
+      document.getElementById('task-id').value = task.id;
+      document.getElementById('task-judul').value = task.judul;
+      document.getElementById('task-deskripsi').value = task.deskripsi || '';
+      document.getElementById('task-deadline').value = task.deadline || '';
+      document.getElementById('task-status').value = task.status;
+
+      document.getElementById('form-heading').textContent = `Edit Tugas #${task.id}`;
+      document.getElementById('form-mode-badge').textContent = "Mode Edit";
+      document.getElementById('form-mode-badge').className = "text-[11px] font-semibold text-amber-700 bg-amber-50 border border-amber-100 px-2.5 py-1 rounded-md";
+      document.getElementById('btn-submit-label').textContent = "Perbarui Tugas";
+
+      document.getElementById('task-judul').focus();
+    }
+
+    function resetForm() {
+      hideErrorAlert();
+      document.getElementById('task-form').reset();
+      document.getElementById('task-id').value = '';
+      document.getElementById('form-heading').textContent = "Tambah Tugas Baru";
+      document.getElementById('form-mode-badge').textContent = "Mode Tambah";
+      document.getElementById('form-mode-badge').className = "text-[11px] font-semibold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-md";
+      document.getElementById('btn-submit-label').textContent = "Simpan Tugas";
+    }
+
+    // ===================================================================
+    // 8. DELETE TASK
+    // ===================================================================
+    async function deleteTask(id) {
+      if (!confirm("Apakah Anda yakin ingin menghapus tugas ini? Tindakan ini tidak dapat dibatalkan.")) {
+        return;
+      }
+
+      if (isCloud && supabaseClient) {
+        try {
+          await supabaseClient.from('tasks').delete().eq('id', id);
+        } catch (err) {
+          console.error("Gagal menghapus tugas dari Supabase:", err);
+        }
+      }
+
+      tasksState = tasksState.filter(t => String(t.id) !== String(id));
+      saveLocal();
+      renderTasks();
+      
+      // Jika form sedang mengedit tugas yang dihapus, reset form
+      if (document.getElementById('task-id').value == String(id)) {
+        resetForm();
+      }
+    }
+
+    // Initialize application
+    window.addEventListener('DOMContentLoaded', () => {
+      updateLiveDate();
+      loadTasks();
+    });
+  </script>
+</body>
+</html>
