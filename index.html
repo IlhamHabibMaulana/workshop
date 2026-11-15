@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,11 @@
   <!-- Google Fonts: Plus Jakarta Sans & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
+  <!-- Custom Stylesheet / Design System -->
+  <link rel="stylesheet" href="style.css">
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Supabase JS CDN -->
@@ -44,28 +49,56 @@
     }
   </script>
   <style>
-    body { font-family: 'Inter', sans-serif; background-color: #0D1320; color: #DDE2F5; }
-    h1, h2, h3, .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0D1320;
+      color: #DDE2F5;
+    }
+
+    h1,
+    h2,
+    h3,
+    .font-display {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
     /* Custom Scrollbar for Dark Theme */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #0D1320; }
-    ::-webkit-scrollbar-thumb { background: #242A38; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #333948; }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0D1320;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #242A38;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #333948;
+    }
   </style>
 </head>
+
 <body class="bg-[#0D1320] text-[#DDE2F5] min-h-screen flex antialiased selection:bg-amber-500 selection:text-black">
 
   <!-- ===================================================================
        1. SIDEBAR NAVIGASI (ASIDE - Sesuai Figma Frame 1:394)
        =================================================================== -->
-  <aside class="w-64 bg-[#161B29] border-r border-[#242A38] shrink-0 hidden md:flex flex-col justify-between p-4 sticky top-0 h-screen z-20">
+  <aside
+    class="w-64 bg-[#161B29] border-r border-[#242A38] shrink-0 hidden md:flex flex-col justify-between p-4 sticky top-0 h-screen z-20">
     <div class="space-y-6">
-      
+
       <!-- Brand Logo & App Name -->
       <div class="flex items-center gap-3 px-2 pt-2">
-        <div class="w-8 h-8 rounded-lg bg-[#F59E0B] flex items-center justify-center text-[#472A00] shadow-md shadow-amber-500/20 shrink-0">
+        <div
+          class="w-8 h-8 rounded-lg bg-[#F59E0B] flex items-center justify-center text-[#472A00] shadow-md shadow-amber-500/20 shrink-0">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
           </svg>
         </div>
         <div>
@@ -77,44 +110,64 @@
       <!-- Navigation Links -->
       <nav class="space-y-1 text-sm font-medium">
         <!-- Semua Tugas (Active) -->
-        <button type="button" onclick="setFilterSidebar('Semua')" id="nav-semua" class="w-full flex items-center justify-between px-3 py-2 rounded-md bg-[#F59E0B] text-[#472A00] font-semibold transition">
+        <button type="button" onclick="setFilterSidebar('Semua')" id="nav-semua"
+          class="w-full flex items-center justify-between px-3 py-2 rounded-md bg-[#F59E0B] text-[#472A00] font-semibold transition">
           <div class="flex items-center gap-2.5">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+            </svg>
             <span>Semua Tugas</span>
           </div>
           <span id="badge-nav-total" class="text-xs bg-[#472A00]/20 px-2 py-0.5 rounded-full font-bold">0</span>
         </button>
 
         <!-- Hari Ini -->
-        <button type="button" onclick="setFilterSidebar('Hari Ini')" id="nav-hari-ini" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-[#D8C3AD] hover:bg-[#242A38] hover:text-[#DDE2F5] transition">
+        <button type="button" onclick="setFilterSidebar('Hari Ini')" id="nav-hari-ini"
+          class="w-full flex items-center justify-between px-3 py-2 rounded-md text-[#D8C3AD] hover:bg-[#242A38] hover:text-[#DDE2F5] transition">
           <div class="flex items-center gap-2.5">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
             <span>Hari Ini</span>
           </div>
           <span id="badge-nav-today" class="text-xs bg-[#242A38] px-2 py-0.5 rounded-full text-[#D8C3AD]">0</span>
         </button>
 
         <!-- Mendatang -->
-        <button type="button" onclick="setFilterSidebar('Mendatang')" id="nav-mendatang" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-[#D8C3AD] hover:bg-[#242A38] hover:text-[#DDE2F5] transition">
+        <button type="button" onclick="setFilterSidebar('Mendatang')" id="nav-mendatang"
+          class="w-full flex items-center justify-between px-3 py-2 rounded-md text-[#D8C3AD] hover:bg-[#242A38] hover:text-[#DDE2F5] transition">
           <div class="flex items-center gap-2.5">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
             <span>Mendatang</span>
           </div>
         </button>
 
         <!-- Selesai -->
-        <button type="button" onclick="setFilterSidebar('Completed')" id="nav-selesai" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-[#D8C3AD] hover:bg-[#242A38] hover:text-[#DDE2F5] transition">
+        <button type="button" onclick="setFilterSidebar('Completed')" id="nav-selesai"
+          class="w-full flex items-center justify-between px-3 py-2 rounded-md text-[#D8C3AD] hover:bg-[#242A38] hover:text-[#DDE2F5] transition">
           <div class="flex items-center gap-2.5">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
             <span>Selesai</span>
           </div>
           <span id="badge-nav-completed" class="text-xs bg-[#242A38] px-2 py-0.5 rounded-full text-[#4EDEA3]">0</span>
         </button>
 
         <!-- Kategori / Tag -->
-        <button type="button" onclick="focusCategoryFilter()" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-[#D8C3AD] hover:bg-[#242A38] hover:text-[#DDE2F5] transition">
+        <button type="button" onclick="focusCategoryFilter()"
+          class="w-full flex items-center justify-between px-3 py-2 rounded-md text-[#D8C3AD] hover:bg-[#242A38] hover:text-[#DDE2F5] transition">
           <div class="flex items-center gap-2.5">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+            </svg>
             <span>Kategori / Tag</span>
           </div>
         </button>
@@ -133,7 +186,8 @@
       </div>
       <!-- Mini Progress Track -->
       <div class="w-full bg-[#2F3543] h-1.5 rounded-full overflow-hidden">
-        <div id="sidebar-progress-bar" class="bg-[#FFC174] h-full transition-all duration-300" style="width: 50%;"></div>
+        <div id="sidebar-progress-bar" class="bg-[#FFC174] h-full transition-all duration-300" style="width: 50%;">
+        </div>
       </div>
     </div>
   </aside>
@@ -144,38 +198,43 @@
   <div class="flex-1 flex flex-col min-w-0">
 
     <!-- TOP HEADER BAR: Search, Date, Connection & Profile -->
-    <header class="bg-[#161B29]/90 backdrop-blur-md border-b border-[#242A38] px-6 py-3 flex items-center justify-between gap-4 sticky top-0 z-10">
+    <header
+      class="bg-[#161B29]/90 backdrop-blur-md border-b border-[#242A38] px-6 py-3 flex items-center justify-between gap-4 sticky top-0 z-10">
       <!-- Search Bar -->
       <div class="relative max-w-md w-full">
         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#D8C3AD]/60">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
         </div>
-        <input 
-          type="text" 
-          id="search-input" 
-          oninput="renderTasks()"
-          placeholder="Cari tugas berdasarkan judul atau deskripsi..." 
-          class="w-full bg-[#0D1320] border border-[#242A38] rounded-lg pl-9 pr-4 py-1.5 text-xs text-[#DDE2F5] placeholder-[#D8C3AD]/50 focus:outline-none focus:border-[#F59E0B] focus:ring-1 focus:ring-[#F59E0B] transition"
-        >
+        <input type="text" id="search-input" oninput="renderTasks()"
+          placeholder="Cari tugas berdasarkan judul atau deskripsi..."
+          class="w-full bg-[#0D1320] border border-[#242A38] rounded-lg pl-9 pr-4 py-1.5 text-xs text-[#DDE2F5] placeholder-[#D8C3AD]/50 focus:outline-none focus:border-[#F59E0B] focus:ring-1 focus:ring-[#F59E0B] transition">
       </div>
 
       <!-- Right Header Actions: Date, Connection Status, User Profile -->
       <div class="flex items-center gap-4 shrink-0">
         <!-- Date Badge -->
         <div class="hidden lg:flex items-center gap-1.5 text-xs text-[#D8C3AD] bg-[#242A38] px-3 py-1.5 rounded-md">
-          <svg class="w-3.5 h-3.5 text-[#FFC174]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <svg class="w-3.5 h-3.5 text-[#FFC174]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
           <span id="live-date-header">Selasa, 24 Oktober 2026</span>
         </div>
 
         <!-- Supabase Connection Badge -->
-        <div id="conn-badge" class="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-950/60 text-[#4EDEA3] border border-emerald-500/30">
+        <div id="conn-badge"
+          class="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-950/60 text-[#4EDEA3] border border-emerald-500/30">
           <span class="w-2 h-2 rounded-full bg-[#4EDEA3] animate-pulse"></span>
           <span id="conn-text">Demo Local State</span>
         </div>
 
         <!-- User Profile Pill -->
         <div class="flex items-center gap-2.5 pl-2 border-l border-[#242A38]">
-          <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold text-white border border-[#242A38]">
+          <div
+            class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-xs font-bold text-white border border-[#242A38]">
             BP
           </div>
           <div class="hidden sm:block text-left">
@@ -199,24 +258,26 @@
         </div>
 
         <!-- Tombol Tambah Tugas Modal -->
-        <button 
-          type="button" 
-          onclick="openTaskModal()" 
-          class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#F59E0B] hover:bg-amber-400 active:bg-amber-600 text-[#472A00] font-semibold text-xs uppercase tracking-wider rounded-md transition shadow-md shadow-amber-500/20"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+        <button type="button" onclick="openTaskModal()"
+          class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#F59E0B] hover:bg-amber-400 active:bg-amber-600 text-[#472A00] font-semibold text-xs uppercase tracking-wider rounded-md transition shadow-md shadow-amber-500/20">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+          </svg>
           <span>+ Tambah Tugas Baru</span>
         </button>
       </div>
 
       <!-- 4 BENTO METRIC WIDGETS (Sesuai Figma Frame 1:17) -->
       <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        
+
         <!-- Bento 1: Total Beban Tugas -->
         <div class="bg-[#1A1F2D] border border-[#242A38] rounded-lg p-4 flex flex-col justify-between shadow-sm">
           <div class="flex items-center justify-between text-[#D8C3AD]">
             <span class="text-[11px] font-semibold uppercase tracking-wider">Total Beban Tugas</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
           </div>
           <div class="mt-4 flex items-baseline justify-between">
             <span id="kpi-total" class="text-3xl font-bold text-[#DDE2F5] font-display">0</span>
@@ -231,7 +292,10 @@
         <div class="bg-[#1A1F2D] border border-[#242A38] rounded-lg p-4 flex flex-col justify-between shadow-sm">
           <div class="flex items-center justify-between text-[#D8C3AD]">
             <span class="text-[11px] font-semibold uppercase tracking-wider">Perlu Tindakan (Pending)</span>
-            <svg class="w-4 h-4 text-[#FFB95F]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <svg class="w-4 h-4 text-[#FFB95F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
           </div>
           <div class="mt-4 flex items-baseline justify-between">
             <span id="kpi-pending" class="text-3xl font-bold text-[#FFC174] font-display">0</span>
@@ -246,7 +310,10 @@
         <div class="bg-[#1A1F2D] border border-[#242A38] rounded-lg p-4 flex flex-col justify-between shadow-sm">
           <div class="flex items-center justify-between text-[#D8C3AD]">
             <span class="text-[11px] font-semibold uppercase tracking-wider">Tuntas Diselesaikan</span>
-            <svg class="w-4 h-4 text-[#4EDEA3]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <svg class="w-4 h-4 text-[#4EDEA3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
           </div>
           <div class="mt-4 flex items-baseline justify-between">
             <span id="kpi-completed" class="text-3xl font-bold text-[#4EDEA3] font-display">0</span>
@@ -267,8 +334,11 @@
           <!-- Radial Progress Mini SVG -->
           <div class="relative w-12 h-12 shrink-0">
             <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-              <path class="text-[#242A38]" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-              <path id="radial-gauge" class="text-[#FFB4AB]" stroke-width="3.5" stroke-dasharray="35, 100" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+              <path class="text-[#242A38]" stroke-width="3.5" stroke="currentColor" fill="none"
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path id="radial-gauge" class="text-[#FFB4AB]" stroke-width="3.5" stroke-dasharray="35, 100"
+                stroke-linecap="round" stroke="currentColor" fill="none"
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
             </svg>
             <div class="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-[#FFB4AB]">
               !
@@ -278,35 +348,42 @@
       </section>
 
       <!-- ALERT ERROR BOX (TC-02: Muncul Jika Judul Kosong) -->
-      <div id="alert-error" class="hidden p-3.5 bg-rose-950/80 border border-rose-500/50 rounded-lg flex items-center justify-between gap-3 text-rose-200 text-xs animate-fade-in" role="alert">
+      <div id="alert-error"
+        class="hidden p-3.5 bg-rose-950/80 border border-rose-500/50 rounded-lg flex items-center justify-between gap-3 text-rose-200 text-xs animate-fade-in"
+        role="alert">
         <div class="flex items-center gap-2.5">
-          <svg class="w-4 h-4 text-rose-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <svg class="w-4 h-4 text-rose-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
           <span id="alert-error-message" class="font-semibold text-rose-100">Judul tugas tidak boleh kosong!</span>
         </div>
         <button type="button" onclick="hideErrorAlert()" class="text-rose-400 hover:text-rose-100">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
         </button>
       </div>
 
       <!-- IN-PLACE QUICK ADD TASK BAR (Sesuai Figma Frame 1:70) -->
       <section class="bg-[#242A38] p-2 rounded-lg shadow-md border border-[#242A38]">
-        <form id="quick-add-form" onsubmit="handleQuickAdd(event)" class="bg-[#080E1B]/80 p-2 rounded-md flex flex-col md:flex-row items-center gap-2">
-          
+        <form id="quick-add-form" onsubmit="handleQuickAdd(event)"
+          class="bg-[#080E1B]/80 p-2 rounded-md flex flex-col md:flex-row items-center gap-2">
+
           <!-- Task Title Input -->
           <div class="flex-1 flex items-center gap-2.5 px-3 w-full">
-            <svg class="w-4 h-4 text-[#D8C3AD]/60 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
-            <input 
-              type="text" 
-              id="quick-judul" 
-              maxlength="150"
-              placeholder="Masukkan judul tugas baru (Please enter a new task)..." 
-              class="w-full bg-transparent text-sm text-[#DDE2F5] placeholder-[#D8C3AD]/50 focus:outline-none py-1.5"
-            >
+            <svg class="w-4 h-4 text-[#D8C3AD]/60 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+            <input type="text" id="quick-judul" maxlength="150"
+              placeholder="Masukkan judul tugas baru (Please enter a new task)..."
+              class="w-full bg-transparent text-sm text-[#DDE2F5] placeholder-[#D8C3AD]/50 focus:outline-none py-1.5">
           </div>
 
           <div class="flex items-center gap-2 w-full md:w-auto shrink-0 justify-end">
             <!-- Category Tag Select -->
-            <select id="quick-kategori" class="bg-[#242A38] text-xs text-[#DDE2F5] border-0 rounded px-2.5 py-2 focus:ring-1 focus:ring-amber-500 focus:outline-none">
+            <select id="quick-kategori"
+              class="bg-[#242A38] text-xs text-[#DDE2F5] border-0 rounded px-2.5 py-2 focus:ring-1 focus:ring-amber-500 focus:outline-none">
               <option value="Sprint">Sprint</option>
               <option value="Akademik">Akademik</option>
               <option value="Operasional">Operasional</option>
@@ -315,20 +392,17 @@
 
             <!-- Deadline Date Input -->
             <div class="bg-[#242A38] flex items-center gap-1.5 px-2.5 py-1.5 rounded">
-              <svg class="w-3.5 h-3.5 text-[#FFC174]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-              <input 
-                type="date" 
-                id="quick-deadline" 
-                class="bg-transparent text-xs text-[#DDE2F5] focus:outline-none [color-scheme:dark]"
-              >
+              <svg class="w-3.5 h-3.5 text-[#FFC174]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <input type="date" id="quick-deadline"
+                class="bg-transparent text-xs text-[#DDE2F5] focus:outline-none [color-scheme:dark]">
             </div>
 
             <!-- Submit Button "+ TAMBAH" -->
-            <button 
-              type="submit" 
-              id="btn-quick-submit"
-              class="px-5 py-2 bg-[#F59E0B] hover:bg-amber-400 active:bg-amber-600 text-[#472A00] font-bold text-xs uppercase tracking-wider rounded transition flex items-center gap-1.5 shadow-sm shadow-amber-500/20 shrink-0"
-            >
+            <button type="submit" id="btn-quick-submit"
+              class="px-5 py-2 bg-[#F59E0B] hover:bg-amber-400 active:bg-amber-600 text-[#472A00] font-bold text-xs uppercase tracking-wider rounded transition flex items-center gap-1.5 shadow-sm shadow-amber-500/20 shrink-0">
               <span>+ TAMBAH</span>
             </button>
           </div>
@@ -339,43 +413,35 @@
       <section class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
         <!-- Status Segmented Control (Tabs) -->
         <div class="bg-[#1A1F2D] p-1 rounded-md border border-[#242A38] flex items-center gap-1 w-full sm:w-auto">
-          <button 
-            type="button" 
-            onclick="setStatusFilter('Semua')" 
-            id="tab-semua" 
-            class="px-3.5 py-1.5 rounded text-xs font-semibold bg-[#333948] text-[#DDE2F5] transition flex items-center gap-2"
-          >
+          <button type="button" onclick="setStatusFilter('Semua')" id="tab-semua"
+            class="px-3.5 py-1.5 rounded text-xs font-semibold bg-[#333948] text-[#DDE2F5] transition flex items-center gap-2">
             <span>Semua</span>
             <span id="tab-count-all" class="text-[10px] bg-[#242A38] px-1.5 py-0.2 rounded-full text-[#D8C3AD]">0</span>
           </button>
-          
-          <button 
-            type="button" 
-            onclick="setStatusFilter('Pending')" 
-            id="tab-pending" 
-            class="px-3.5 py-1.5 rounded text-xs font-medium text-[#D8C3AD] hover:text-[#DDE2F5] transition flex items-center gap-2"
-          >
+
+          <button type="button" onclick="setStatusFilter('Pending')" id="tab-pending"
+            class="px-3.5 py-1.5 rounded text-xs font-medium text-[#D8C3AD] hover:text-[#DDE2F5] transition flex items-center gap-2">
             <span>Menunggu</span>
-            <span id="tab-count-pending" class="text-[10px] bg-[#F59E0B]/20 text-[#FFB95F] px-1.5 py-0.2 rounded-full font-bold">0</span>
+            <span id="tab-count-pending"
+              class="text-[10px] bg-[#F59E0B]/20 text-[#FFB95F] px-1.5 py-0.2 rounded-full font-bold">0</span>
           </button>
 
-          <button 
-            type="button" 
-            onclick="setStatusFilter('Completed')" 
-            id="tab-completed" 
-            class="px-3.5 py-1.5 rounded text-xs font-medium text-[#D8C3AD] hover:text-[#DDE2F5] transition flex items-center gap-2"
-          >
+          <button type="button" onclick="setStatusFilter('Completed')" id="tab-completed"
+            class="px-3.5 py-1.5 rounded text-xs font-medium text-[#D8C3AD] hover:text-[#DDE2F5] transition flex items-center gap-2">
             <span>Selesai</span>
-            <span id="tab-count-completed" class="text-[10px] bg-emerald-500/20 text-[#4EDEA3] px-1.5 py-0.2 rounded-full font-bold">0</span>
+            <span id="tab-count-completed"
+              class="text-[10px] bg-emerald-500/20 text-[#4EDEA3] px-1.5 py-0.2 rounded-full font-bold">0</span>
           </button>
         </div>
 
         <!-- Sorting & Category Selectors (Sesuai Figma Frame 1:115) -->
         <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end">
           <!-- Sorting Selector -->
-          <div class="bg-[#1A1F2D] border border-[#242A38] px-3 py-1.5 rounded flex items-center gap-2 text-xs text-[#D8C3AD]">
+          <div
+            class="bg-[#1A1F2D] border border-[#242A38] px-3 py-1.5 rounded flex items-center gap-2 text-xs text-[#D8C3AD]">
             <span class="font-semibold text-[#D8C3AD]">Urut:</span>
-            <select id="sort-selector" onchange="renderTasks()" class="bg-transparent text-[#DDE2F5] font-semibold focus:outline-none cursor-pointer">
+            <select id="sort-selector" onchange="renderTasks()"
+              class="bg-transparent text-[#DDE2F5] font-semibold focus:outline-none cursor-pointer">
               <option value="terdekat" class="bg-[#1A1F2D]">Tenggat Terdekat</option>
               <option value="terjauh" class="bg-[#1A1F2D]">Tenggat Terjauh</option>
               <option value="terbaru" class="bg-[#1A1F2D]">Terbaru Ditambahkan</option>
@@ -383,8 +449,10 @@
           </div>
 
           <!-- Category Filter Selector -->
-          <div class="bg-[#1A1F2D] border border-[#242A38] px-3 py-1.5 rounded flex items-center gap-2 text-xs text-[#DDE2F5]">
-            <select id="category-filter" onchange="renderTasks()" class="bg-transparent text-[#DDE2F5] font-semibold focus:outline-none cursor-pointer">
+          <div
+            class="bg-[#1A1F2D] border border-[#242A38] px-3 py-1.5 rounded flex items-center gap-2 text-xs text-[#DDE2F5]">
+            <select id="category-filter" onchange="renderTasks()"
+              class="bg-transparent text-[#DDE2F5] font-semibold focus:outline-none cursor-pointer">
               <option value="Semua" class="bg-[#1A1F2D]">Semua Kategori</option>
               <option value="Sprint" class="bg-[#1A1F2D]">Sprint</option>
               <option value="Akademik" class="bg-[#1A1F2D]">Akademik</option>
@@ -401,9 +469,13 @@
       </section>
 
       <!-- EMPTY STATE -->
-      <div id="empty-state" class="hidden text-center py-16 px-4 bg-[#161B29]/60 rounded-xl border border-dashed border-[#242A38]">
+      <div id="empty-state"
+        class="hidden text-center py-16 px-4 bg-[#161B29]/60 rounded-xl border border-dashed border-[#242A38]">
         <div class="w-12 h-12 rounded-full bg-[#1A1F2D] text-[#D8C3AD] mx-auto flex items-center justify-center mb-3">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
         </div>
         <h3 class="text-sm font-semibold text-[#DDE2F5]">Tidak ada tugas ditemukan</h3>
         <p class="text-xs text-[#D8C3AD]/70 mt-1">Gunakan bar input di atas untuk menambahkan tugas baru.</p>
@@ -420,18 +492,25 @@
   <!-- ===================================================================
        3. MODAL EDIT / DETAIL TUGAS
        =================================================================== -->
-  <div id="task-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4">
+  <div id="task-modal"
+    class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4">
     <div class="bg-[#1A1F2D] border border-[#242A38] rounded-xl max-w-lg w-full p-6 shadow-2xl space-y-4">
       <div class="flex items-center justify-between pb-3 border-b border-[#242A38]">
         <h3 id="modal-heading" class="text-base font-bold text-[#DDE2F5] font-display">Edit Tugas</h3>
         <button type="button" onclick="closeTaskModal()" class="text-[#D8C3AD] hover:text-[#DDE2F5]">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
         </button>
       </div>
 
       <!-- Modal Error Alert (TC-02) -->
-      <div id="modal-alert-error" class="hidden p-3 bg-rose-950/80 border border-rose-500/50 rounded-lg flex items-center gap-2 text-rose-200 text-xs">
-        <svg class="w-4 h-4 text-rose-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <div id="modal-alert-error"
+        class="hidden p-3 bg-rose-950/80 border border-rose-500/50 rounded-lg flex items-center gap-2 text-rose-200 text-xs">
+        <svg class="w-4 h-4 text-rose-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
         <span id="modal-alert-error-message" class="font-semibold text-rose-100">Judul tugas tidak boleh kosong!</span>
       </div>
 
@@ -439,28 +518,23 @@
         <input type="hidden" id="modal-task-id" value="">
 
         <div>
-          <label class="block text-xs font-semibold text-[#D8C3AD] mb-1">Judul Tugas <span class="text-rose-400">*</span></label>
-          <input 
-            type="text" 
-            id="modal-judul" 
-            maxlength="150"
-            class="w-full bg-[#0D1320] border border-[#242A38] rounded-lg px-3 py-2 text-sm text-[#DDE2F5] focus:outline-none focus:border-[#F59E0B]"
-          >
+          <label class="block text-xs font-semibold text-[#D8C3AD] mb-1">Judul Tugas <span
+              class="text-rose-400">*</span></label>
+          <input type="text" id="modal-judul" maxlength="150"
+            class="w-full bg-[#0D1320] border border-[#242A38] rounded-lg px-3 py-2 text-sm text-[#DDE2F5] focus:outline-none focus:border-[#F59E0B]">
         </div>
 
         <div>
           <label class="block text-xs font-semibold text-[#D8C3AD] mb-1">Deskripsi Tugas</label>
-          <textarea 
-            id="modal-deskripsi" 
-            rows="3" 
-            class="w-full bg-[#0D1320] border border-[#242A38] rounded-lg px-3 py-2 text-sm text-[#DDE2F5] focus:outline-none focus:border-[#F59E0B] resize-y"
-          ></textarea>
+          <textarea id="modal-deskripsi" rows="3"
+            class="w-full bg-[#0D1320] border border-[#242A38] rounded-lg px-3 py-2 text-sm text-[#DDE2F5] focus:outline-none focus:border-[#F59E0B] resize-y"></textarea>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-semibold text-[#D8C3AD] mb-1">Kategori</label>
-            <select id="modal-kategori" class="w-full bg-[#0D1320] border border-[#242A38] rounded-lg px-3 py-2 text-sm text-[#DDE2F5] focus:outline-none focus:border-[#F59E0B]">
+            <select id="modal-kategori"
+              class="w-full bg-[#0D1320] border border-[#242A38] rounded-lg px-3 py-2 text-sm text-[#DDE2F5] focus:outline-none focus:border-[#F59E0B]">
               <option value="Sprint">Sprint</option>
               <option value="Akademik">Akademik</option>
               <option value="Operasional">Operasional</option>
@@ -469,7 +543,8 @@
           </div>
           <div>
             <label class="block text-xs font-semibold text-[#D8C3AD] mb-1">Status Pengerjaan</label>
-            <select id="modal-status" class="w-full bg-[#0D1320] border border-[#242A38] rounded-lg px-3 py-2 text-sm text-[#DDE2F5] focus:outline-none focus:border-[#F59E0B]">
+            <select id="modal-status"
+              class="w-full bg-[#0D1320] border border-[#242A38] rounded-lg px-3 py-2 text-sm text-[#DDE2F5] focus:outline-none focus:border-[#F59E0B]">
               <option value="Pending">Pending (Tertunda)</option>
               <option value="Completed">Completed (Selesai)</option>
             </select>
@@ -478,18 +553,17 @@
 
         <div>
           <label class="block text-xs font-semibold text-[#D8C3AD] mb-1">Tenggat Waktu (Deadline)</label>
-          <input 
-            type="date" 
-            id="modal-deadline" 
-            class="w-full bg-[#0D1320] border border-[#242A38] rounded-lg px-3 py-2 text-sm text-[#DDE2F5] focus:outline-none focus:border-[#F59E0B] [color-scheme:dark]"
-          >
+          <input type="date" id="modal-deadline"
+            class="w-full bg-[#0D1320] border border-[#242A38] rounded-lg px-3 py-2 text-sm text-[#DDE2F5] focus:outline-none focus:border-[#F59E0B] [color-scheme:dark]">
         </div>
 
         <div class="flex items-center justify-end gap-2 pt-3 border-t border-[#242A38]">
-          <button type="button" onclick="closeTaskModal()" class="px-4 py-2 bg-[#242A38] hover:bg-[#333948] text-[#D8C3AD] text-xs font-semibold rounded-md transition">
+          <button type="button" onclick="closeTaskModal()"
+            class="px-4 py-2 bg-[#242A38] hover:bg-[#333948] text-[#D8C3AD] text-xs font-semibold rounded-md transition">
             Batal
           </button>
-          <button type="submit" class="px-5 py-2 bg-[#F59E0B] hover:bg-amber-400 text-[#472A00] text-xs font-bold uppercase tracking-wider rounded-md transition shadow-md shadow-amber-500/20">
+          <button type="submit"
+            class="px-5 py-2 bg-[#F59E0B] hover:bg-amber-400 text-[#472A00] text-xs font-bold uppercase tracking-wider rounded-md transition shadow-md shadow-amber-500/20">
             Simpan Perubahan
           </button>
         </div>
@@ -504,15 +578,17 @@
     // ===================================================================
     // KREDENSIAL SUPABASE (SEC-02: Public Anon Key Only)
     // ===================================================================
-    const SUPABASE_URL = "";
-    const SUPABASE_ANON_KEY = "";
-
+    const SUPABASE_URL = "https://aickqgzabwecvqrsmcdi.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_Oi-KpZd5MJRsbkAjAX4J-g_6mkYoKjJ
     let supabaseClient = null;
     let isCloud = false;
 
-    if (SUPABASE_URL && SUPABASE_ANON_KEY && typeof supabase !== 'undefined') {
+    // Bersihkan URL dari akhiran /rest/v1 jika tidak sengaja terbawa
+    const cleanUrl = SUPABASE_URL.trim().replace(/\/rest\/v1\/?$/, '').replace(/\/+$/, '');
+
+    if (cleanUrl && SUPABASE_ANON_KEY && typeof supabase !== 'undefined') {
       try {
-        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        supabaseClient = supabase.createClient(cleanUrl, SUPABASE_ANON_KEY);
         isCloud = true;
         document.getElementById('conn-text').textContent = "Supabase Connected";
         document.getElementById('conn-badge').className = "flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-950/60 text-[#4EDEA3] border border-emerald-500/30";
@@ -613,7 +689,7 @@
       if (!dateString) return "-";
       const date = new Date(dateString);
       if (isNaN(date.getTime())) return "-";
-      
+
       const today = new Date().toISOString().split('T')[0];
       const isToday = dateString === today;
 
@@ -709,10 +785,10 @@
       // Filter tasks
       let list = tasksState.filter(t => {
         const matchQ = (t.judul || '').toLowerCase().includes(query) || (t.deskripsi || '').toLowerCase().includes(query);
-        const matchStatus = (currentStatusFilter === 'Semua') || 
-                            (currentStatusFilter === 'Hari Ini' && t.deadline === todayStr) ||
-                            (currentStatusFilter === 'Mendatang' && t.deadline > todayStr) ||
-                            (t.status === currentStatusFilter);
+        const matchStatus = (currentStatusFilter === 'Semua') ||
+          (currentStatusFilter === 'Hari Ini' && t.deadline === todayStr) ||
+          (currentStatusFilter === 'Mendatang' && t.deadline > todayStr) ||
+          (t.status === currentStatusFilter);
         const matchCat = (catVal === 'Semua') || (t.kategori === catVal);
         return matchQ && matchStatus && matchCat;
       });
@@ -749,7 +825,7 @@
           checkBtn.type = "button";
           checkBtn.title = isDone ? "Tandai belum selesai" : "Tandai selesai";
           checkBtn.className = `w-5 h-5 rounded shrink-0 flex items-center justify-center transition-all mt-0.5 ${isDone ? 'bg-[#F59E0B] text-[#472A00]' : 'border border-[#D8C3AD]/40 bg-[#1A1F2D] hover:border-[#F59E0B]'}`;
-          checkBtn.innerHTML = isDone 
+          checkBtn.innerHTML = isDone
             ? `<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>`
             : '';
           checkBtn.addEventListener('click', () => toggleStatus(task.id));
@@ -1064,4 +1140,5 @@
     });
   </script>
 </body>
+
 </html>
